@@ -17,7 +17,6 @@ interface MainStore: Store<Intent, State, Label> {
         data class ChangeNickname(val nickname: String) : Intent
         data class ChangeHost(val host: String) : Intent
         data class ChangeTheme(val theme: ThemeTint) : Intent
-        data object UpdateTheme : Intent
     }
 
     sealed interface Message {

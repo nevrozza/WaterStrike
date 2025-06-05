@@ -12,15 +12,19 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun animate(
     animationSpec: AnimationSpec<Color> = remember { spring(stiffness = Spring.StiffnessLow) },
+    finishedListener: ((Color) -> Unit)? = null,
     color: () -> Color
 ): Color {
-    return animateColorAsState(color(), animationSpec, label = "colorAnimation").value
+    return animateColorAsState(color(), animationSpec, label = "colorAnimation", finishedListener = finishedListener).value
 }
 
 @Composable
-fun ColorScheme.animated(animationSpec: AnimationSpec<Color> = remember { spring(stiffness = Spring.StiffnessLow) }): ColorScheme {
+fun ColorScheme.animated(
+    animationSpec: AnimationSpec<Color> = remember { spring(stiffness = Spring.StiffnessLow) },
+    finishedListener: ((Color) -> Unit)? = null
+): ColorScheme {
     return this.copy(
-        primary = animate(animationSpec) { this.primary },
+        primary = animate(animationSpec, finishedListener = finishedListener) { this.primary },
         primaryContainer = animate(animationSpec) { this.primaryContainer },
         secondary = animate(animationSpec) { this.secondary },
         secondaryContainer = animate(animationSpec) { this.secondaryContainer },

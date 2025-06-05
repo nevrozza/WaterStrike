@@ -4,7 +4,9 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import compose.RootScreen
 import root.RootComponentImpl
-import view.ThemeTint
+import usecases.ThemeUseCases
+import utils.toHex
+import view.colorScheme
 import view.compositionLocals.LocalViewManager
 import view.compositionLocals.initViewManager
 import view.compositionLocals.viewManagerState
@@ -17,7 +19,7 @@ import kotlin.uuid.Uuid
 fun main() {
 
     val deviceId = Uuid.parse(getOrCreateDeviceUUID())
-    initKoin(
+    val koin = initKoin(
         platformConfiguration = PlatformConfiguration(
             deviceId = deviceId
         ),
@@ -32,7 +34,9 @@ fun main() {
         ),
         storeFactory = DefaultStoreFactory()
     )
-    viewManagerState = initViewManager()
+
+    val theme = koin.koin.get<ThemeUseCases>().getTheme().name
+    viewManagerState = initViewManager(theme)
     CompatView {
         PageLoadNotify()
         CompositionLocalProvider(
@@ -40,6 +44,9 @@ fun main() {
         ) {
             AppTheme {
                 RootScreen(rootComponent)
+                Throwable("sad")
+                val hex = colorScheme.background.toHex()
+                changeMetaThemeColor(hex)
             }
         }
     }

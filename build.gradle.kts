@@ -1,3 +1,7 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.binaryen.BinaryenRootEnvSpec
+import org.jetbrains.kotlin.gradle.targets.js.binaryen.BinaryenRootPlugin
+
 plugins {
     //trick: for the same plugin versions in all sub-modules
     id(libs.plugins.android.application.get().pluginId) apply false
@@ -14,3 +18,7 @@ allprojects {
         gradlePluginPortal()
     }
 }
+
+apply<BinaryenRootPlugin>()
+@OptIn(ExperimentalWasmDsl::class)
+the<BinaryenRootEnvSpec>().version.set("123")

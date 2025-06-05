@@ -9,6 +9,15 @@ import kotlinx.coroutines.flow.shareIn
 
 @Composable
 fun <Intent : Any, State : Any, Label : Any> DefaultMVIComponent<Intent, State, Label>.subscribeOnLabels(
+    action: suspend (Label) -> Unit
+) {
+    LaunchedEffect(this) {
+        labels.collectLatest(action)
+    }
+}
+
+@Composable
+fun <Intent : Any, State : Any, Label : Any> DefaultMVIComponent<Intent, State, Label>.subscribeOnLabels(
     onSubscription: () -> Unit = {},
     action: suspend (Label) -> Unit
 ) {

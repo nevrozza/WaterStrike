@@ -10,14 +10,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import compose.RootScreen
 import initKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.stopKoin
 import root.RootComponentImpl
-import compose.RootScreen
-import view.ThemeTint
+import usecases.ThemeUseCases
 import view.compositionLocals.LocalViewManager
-import view.compositionLocals.ViewManager
 import view.compositionLocals.initViewManager
 import view.compositionLocals.viewManagerState
 import view.theme.AppTheme
@@ -52,8 +51,9 @@ class MainActivity : ComponentActivity() {
             storeFactory = DefaultStoreFactory()
         )
 
+        val theme = koin.koin.get<ThemeUseCases>().getTheme().name
+        viewManagerState = initViewManager(theme)
 
-        viewManagerState = initViewManager()
         setContent {
             CompositionLocalProvider(
                 LocalViewManager provides viewManagerState

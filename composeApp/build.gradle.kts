@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.targets.js.binaryen.BinaryenRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -50,6 +49,7 @@ kotlin {
         }
         target.binaries.executable()
     }
+
 
     sourceSets {
         commonMain.dependencies {
@@ -139,39 +139,47 @@ android {
     }
 }
 
-rootProject.configure<BinaryenRootExtension> {
-    this.version = "122"
-}
-
 // https://github.com/JetBrains/kotlinconf-app/blob/f61983404304a4d89981e7a2a2d26ff522406d44/shared/build.gradle.kts
-val buildWebApp by tasks.creating(Copy::class) {
+val buildWebApp by tasks.registering(Copy::class) {
     val wasmDist = "wasmJsBrowserDistribution"
     val jsDist = "jsBrowserDistribution"
+    val dir = "prodWebApp"
 
     buildWebApplication(
-        wasmDist, jsDist
+        wasmDist, jsDist, dir
     )
 }
 
-val buildDevWebApp by tasks.creating(Copy::class) {
+val buildDevWebApp by tasks.registering(Copy::class) {
     val wasmDist = "wasmJsBrowserDevelopmentExecutableDistribution"
     val jsDist = "jsBrowserDevelopmentExecutableDistribution"
-
+    val dir = "devWebApp"
     buildWebApplication(
-        wasmDist, jsDist
+        wasmDist, jsDist, dir
     )
 }
 
 fun Copy.buildWebApplication(
     wasmDist: String,
-    jsDist: String
+    jsDist: String,
+    dirName: String
 ) {
+
+    val dir = layout.buildDirectory.dir(dirName)
+
     dependsOn(wasmDist, jsDist)
 
     from(tasks.named(jsDist).get().outputs.files)
     from(tasks.named(wasmDist).get().outputs.files)
 
-    into(layout.buildDirectory.dir("devWebApp"))
+    val dirFile = dir.get().asFile
+    if (dirFile.exists()) {
+        dirFile.listFiles { f ->
+            project.delete(f)
+        }
+    }
+
+    into(dir)
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
