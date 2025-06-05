@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Water Strike</title>
+    <link rel="manifest" href="/manifest.json">
+    <!--    <meta http-equiv="Cache-control" content="public">-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+
+    <meta name="theme-color" content="#2b2d30"/>
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+    <script type="application/javascript" src="app.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<div id = "composeApp"></div>
+<div>
+    <div class="spinner" id="spinner"></div>
+    <div class="error-message" id="warning unknownError">
+        <p style="font-size: 30px">Произошла неизвестная ошибка</p>
+        <p>Можете попробовать открыть сайт в новой вкладке</p>
+    </div>
+</div>
+<script type="application/javascript" src="enable_wasm.js"></script>
+</body>
+</html>

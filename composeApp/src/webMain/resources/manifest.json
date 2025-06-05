@@ -1,0 +1,14 @@
+{
+
+  "name": "Water Strike",
+
+  "short_name": "Water Strike",
+
+  "display": "standalone",
+
+  "permissions": [
+      "unlimitedStorage",
+      "notifications",
+      "fullscreen"
+  ]
+}
